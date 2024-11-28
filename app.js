@@ -53,7 +53,7 @@ var usersData = [
     pst: 48,
     status: "pass",
     password: "kashan2023",
-    gmail: "kashan@example.com",
+    gmail: "kashan@gmail.com",
   },
   {
     name: "Nadia",
@@ -123,7 +123,7 @@ var usersData = [
     pst: 51,
     status: "pass",
     password: "ayesha1234",
-    gmail: "ayesha@example.com",
+    gmail: "ayesha@gmail.com",
   },
   {
     name: "Fahad",
@@ -187,9 +187,8 @@ var valid = true;
 function check_valid(e, inpName) {
   if (inpName == "roll") {
     if (e.target.value.length < 6) {
-      console.log(e.target.value);
       e.target.nextElementSibling.innerText =
-        "Roll no should be greater than 6!";
+        "Not less 6 characters or empty!";
       e.target.nextElementSibling.style.display = "block";
       valid = false;
       return;
@@ -204,27 +203,25 @@ function check_valid(e, inpName) {
   if (inpName == "name") {
     if (!isNaN(e.target.value)) {
       console.log(e.target.value);
-      e.target.nextElementSibling.innerText = "Should not be a number";
+      e.target.nextElementSibling.innerText = "Should not be a number or empty !";
       e.target.nextElementSibling.style.display = "block";
       valid = false;
       return;
     }
   }
   if (inpName == "gmail") {
-    if (e.target.value.indexOf("@gmail.com") == -1) {
-      console.log(e.target.value);
+    var  regex = /^[\w\-\.\+]+\@[a-zA-Z0-9\. \-]+\.[a-zA-z0-9]{2,4}$/;
+    if (!e.target.value.match(regex)) {
       e.target.nextElementSibling.style.display = "block";
-      e.target.nextElementSibling.innerText = "Invalid gmail";
+      e.target.nextElementSibling.innerText = "Invalid gmail!";
       valid = false;
       return;
     }
   }
-
   if (inpName == "pass") {
     if (e.target.value.length < 8) {
-      console.log(e.target.value);
       e.target.nextElementSibling.innerText =
-        "Password should be greater than 8!";
+        "Not less 8 characters or empty!";
       e.target.nextElementSibling.style.display = "block";
       valid = false;
       return;
@@ -254,35 +251,61 @@ function showResult(e) {
   var i = 0;
   while (i < usersData.length) {
     var checkValid = document.getElementById("invalid-inp");
-    if (usersData[i].gmail == gmail.value && usersData[i].password == Password.value && usersData[i].rollNo==rollNo && usersData[i].name==name){
-      console.log(usersData[i].rollNo)
-      document.getElementById("modal1").style.display="flex"
-      document.getElementById("col1").innerText=usersData[i].name
-      document.getElementById("col2").innerText=usersData[i].rollNo
-      document.getElementById("col3").innerText=usersData[i].chemistry
-      document.getElementById("col4").innerText=usersData[i].physics
-      document.getElementById("col5").innerText=usersData[i].english
-      document.getElementById("col6").innerText=usersData[i].urdu
-      document.getElementById("col7").innerText=usersData[i].pst
-      document.getElementById("col8").innerText=usersData[i].status
+
+    if (
+      usersData[i].gmail == gmail.value &&
+      usersData[i].password == Password.value &&
+      usersData[i].rollNo == rollNo.value &&
+      usersData[i].name == name.value
+    ) {
+      document.getElementById("h5").innerHTML = "Your Result";
+      document.getElementsByClassName("modal-header")[0].style.backgroundColor =
+        "#0093E9";
+      document.getElementsByClassName("modal-header")[0].style.color = "white";
+      document.getElementById("not_found").style.display = "none";
+      document.getElementById("form").style.opacity = "0.2";
+      document.getElementById("modal1").style.display = "flex";
+      document.getElementById("table").style.display = "block";
+      document.getElementById("form").style.display = "none";
+
+      document.getElementById("col1").innerText = usersData[i].name;
+      document.getElementById("col2").innerText = usersData[i].rollNo;
+      document.getElementById("col3").innerText = usersData[i].chemistry;
+      document.getElementById("col4").innerText = usersData[i].physics;
+      document.getElementById("col5").innerText = usersData[i].english;
+      document.getElementById("col6").innerText = usersData[i].urdu;
+      document.getElementById("col7").innerText = usersData[i].pst;
+      document.getElementById("col8").innerText = usersData[i].status;
       checkValid.style.display = "none";
       checkValid.innerText = "";
-      gmail.value=""
-      Password.value=""
-      rollNo.value=""
-      name.value=""
+      gmail.value = "";
+      Password.value = "";
+      rollNo.value = "";
+      name.value = "";
       return;
     }
-     
+
     i++;
   }
-  checkValid.style.display = "block";
-  checkValid.style.textAlign = "center";
-  checkValid.innerText = "gmail or password is incorrect!";
 
-
-  console.log(usersData);
+  document.getElementById("table").style.display = "none";
+  document.getElementById("not_found").style.display = "block";
+  document.getElementById("modal1").style.display = "flex";
+  document.getElementById("form").style.opacity = "0.1";
+  document.getElementById("h5").innerHTML = "Invalid or Wrong information";
+  document.getElementsByClassName("modal-header")[0].style.backgroundColor =
+    "#ff0000db";
+  document.getElementsByClassName("modal-header")[0].style.color = "white";
+  document.getElementsByClassName("modal-body")[0].style.backgroundColor =
+    "#f8b5b4";
+  document.getElementById("table").style.display = "none";
+  document.getElementById("form").style.display = "none";
+ 
 }
-function closeModal(){
-  document.getElementById("modal1").style.display="none"
+function closeModal() {
+  document.getElementById("modal1").style.display = "none";
+  document.getElementById("form").style.opacity = "1";
+  document.getElementById("form").style.display = "flex";
+  document.getElementsByClassName("modal-body")[0].style.backgroundColor =
+    "#b4dff8";
 }
